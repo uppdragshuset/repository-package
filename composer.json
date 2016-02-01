@@ -1,0 +1,17 @@
+{
+    "name": "archiveonline/repository-package",
+    "authors": [
+        {
+            "name": "Rohan Chhabra",
+            "email": "rohan0793@gmail.com"
+        }
+    ],
+    "require": {
+        "league/fractal": "^0.13.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Uppdragshuset\\AO\\Repository\\": "src/"
+        }
+    }
+}
