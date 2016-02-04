@@ -11,25 +11,25 @@ use Uppdragshuset\AO\Repository\Contracts\Criteria;
 
 abstract class BaseRepository implements Repository, Criteria
 {
-	use AuthorizesRequests;
+    use AuthorizesRequests;
 
-	protected $model;
-	protected $criteria;
-	protected $skipCriteria;
+    protected $model;
+    protected $criteria;
+    protected $skipCriteria;
     protected $fieldSearchable;
 
-	public function __construct(Collection $collection) {
-		$this->criteria = $collection;
+    public function __construct(Collection $collection) {
+        $this->criteria = $collection;
         $this->makeModel();
         $this->boot();
     }
 
-	public function all($columns = array('*')) {
+    public function all($columns = array('*')) {
         $this->applyCriteria();
-		if(!$this->model instanceof \Illuminate\Database\Eloquent\Builder){
-			$this->authorize('index', $this->model);
+        if(!$this->model instanceof \Illuminate\Database\Eloquent\Builder){
+            $this->authorize('index', $this->model);
             $results = $this->model->all($columns);
-		}
+        }
         else{
             $results = $this->model->get($columns);
         }
@@ -48,57 +48,57 @@ abstract class BaseRepository implements Repository, Criteria
     public function paginate($perPage = 10, $columns = array('*')) {
         $this->applyCriteria();
         if(!$this->model instanceof \Illuminate\Database\Eloquent\Builder){
-			$this->authorize('index', $this->model);
-		}
+            $this->authorize('index', $this->model);
+        }
         return $this->model->paginate($perPage, $columns);
     }
 
     public function create(array $data) {
-    	$this->authorize('store', $this->model);
+        $this->authorize('store', $this->model);
         return $this->model->create($data);
     }
 
     public function update(array $data, $id, $attribute="id") {
-    	$this->authorize('update', $this->model->find($id));
+        $this->authorize('update', $this->model->find($id));
         $this->model->where($attribute, '=', $id)->update($data);
         return $this->model->find($id);
     }
 
     public function delete($id) {
-    	$this->authorize('destroy', $this->find($id));
-        return $this->model->delete($id);
+        $this->authorize('destroy', $this->find($id));
+        return $this->model->destroy($id);
     }
 
     public function find($id, $columns = array('*')) {
         $this->applyCriteria();
-    	if(!$this->model instanceof \Illuminate\Database\Eloquent\Builder){
-			$this->authorize('index', $this->model);
-		}
+        if(!$this->model instanceof \Illuminate\Database\Eloquent\Builder){
+            $this->authorize('index', $this->model);
+        }
         return $this->model->find($id, $columns);
     }
 
     public function findBy($attribute, $value, $columns = array('*')) {
         $this->applyCriteria();
-    	if(!$this->model instanceof \Illuminate\Database\Eloquent\Builder){
-			$this->authorize('index', $this->model);
-		}
+        if(!$this->model instanceof \Illuminate\Database\Eloquent\Builder){
+            $this->authorize('index', $this->model);
+        }
         return $this->model->where($attribute, '=', $value)->first($columns);
     }
 
     public function findAllBy($attribute, $value, $columns = array('*')) {
         $this->applyCriteria();
-    	if(!$this->model instanceof \Illuminate\Database\Eloquent\Builder){
-			$this->authorize('index', $this->model);
-		}
+        if(!$this->model instanceof \Illuminate\Database\Eloquent\Builder){
+            $this->authorize('index', $this->model);
+        }
         return $this->model->where($attribute, '=', $value)->get($columns);
     }
 
     public function findWhere($where, $columns = ['*'], $or = false)
     {
         $this->applyCriteria();
-    	if(!$this->model instanceof \Illuminate\Database\Eloquent\Builder){
-			$this->authorize('index', $this->model);
-		}
+        if(!$this->model instanceof \Illuminate\Database\Eloquent\Builder){
+            $this->authorize('index', $this->model);
+        }
         $model = $this->model;
         foreach ($where as $field => $value) {
             if ($value instanceof \Closure) {
@@ -128,7 +128,7 @@ abstract class BaseRepository implements Repository, Criteria
 
     public function with($relations)
     {
-    	$this->authorize('index', $this->model);
+        $this->authorize('index', $this->model);
         $this->model = $this->model->with($relations);
         return $this;
     }
@@ -144,7 +144,7 @@ abstract class BaseRepository implements Repository, Criteria
 
     public function boot()
     {
-    	//
+        //
     }
 
     public function skipCriteria($status = true){
@@ -163,8 +163,8 @@ abstract class BaseRepository implements Repository, Criteria
 
     public function pushCriteria(BaseCriteria $criteria)
     {
-    	$this->criteria->push($criteria);
-    	return $this;
+        $this->criteria->push($criteria);
+        return $this;
     }
 
     public function applyCriteria() {
