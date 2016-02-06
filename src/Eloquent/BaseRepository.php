@@ -128,7 +128,9 @@ abstract class BaseRepository implements Repository, Criteria
 
     public function with($relations)
     {
-        $this->authorize('index', $this->model);
+        if(!$this->model instanceof \Illuminate\Database\Eloquent\Builder){
+            $this->authorize('index', $this->model);
+        }
         $this->model = $this->model->with($relations);
         return $this;
     }
