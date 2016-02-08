@@ -5,7 +5,7 @@ namespace Uppdragshuset\AO\Repository;
 use Illuminate\Support\ServiceProvider;
 use App;
 
-class TenantServiceProvider extends ServiceProvider
+class RepositoryServiceProvider extends ServiceProvider
 {
     /**
      * Bootstrap the application services.
