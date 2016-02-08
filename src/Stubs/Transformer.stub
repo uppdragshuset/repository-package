@@ -1,0 +1,16 @@
+<?php
+
+namespace App\Transformers;
+
+use League\Fractal\TransformerAbstract;
+use Uppdragshuset\AO\Tenant\Models\{{Model}};
+
+class {{Model}}Transformer extends TransformerAbstract
+{
+    public function transform({{Model}} $model)
+    {
+        return [
+            'id' => (int) $model->id
+        ];
+    }
+}

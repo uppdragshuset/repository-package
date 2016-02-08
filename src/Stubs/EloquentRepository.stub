@@ -1,0 +1,19 @@
+<?php
+
+namespace App\Repositories;
+
+use Uppdragshuset\AO\Repository\Eloquent\BaseRepository;
+use Uppdragshuset\AO\Repository\Criterias\RequestCriteria;
+
+class Eloquent{{Model}}Repository extends BaseRepository implements {{Model}}Repository
+{
+	public function model()
+	{
+		return 'Uppdragshuset\AO\Tenant\Models\{{Model}}';
+	}
+
+	public function boot()
+	{
+		$this->pushCriteria(app(RequestCriteria::class));
+	}
+}

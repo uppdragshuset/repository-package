@@ -1,0 +1,14 @@
+<?php
+
+namespace App\Presenters;
+
+use App\Transformers\{{Model}}Transformer;
+use Uppdragshuset\AO\Repository\Presenter\FractalPresenter;
+
+class {{Model}}Presenter extends FractalPresenter
+{
+    public function getTransformer()
+    {
+        return new {{Model}}Transformer();
+    }
+}
