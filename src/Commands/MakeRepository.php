@@ -47,19 +47,19 @@ class MakeRepository extends Command
         file_exists(app_path('Presenters')) ? '' : mkdir(app_path('Presenters'));
         file_exists(app_path('Transformers')) ? '' : mkdir(app_path('Transformers'));
 
-        $repositoryStub = $this->files->get(app_path('Stubs/Repository.stub'));
+        $repositoryStub = $this->files->get(__DIR__.'/../Stubs/Repository.stub');
         $repositoryStub = str_replace('{{Model}}', $model, $repositoryStub);
         $this->files->put(app_path('Repositories/' . $model . 'Repository.php'), $repositoryStub);
 
-        $eloquentRepositoryStub = $this->files->get(app_path('Stubs/EloquentRepository.stub'));
+        $eloquentRepositoryStub = $this->files->get(__DIR__.'/../Stubs/EloquentRepository.stub');
         $eloquentRepositoryStub = str_replace('{{Model}}', $model, $eloquentRepositoryStub);
         $this->files->put(app_path('Repositories/Eloquent' . $model . 'Repository.php'), $eloquentRepositoryStub);
 
-        $presenterStub = $this->files->get(app_path('Stubs/Presenter.stub'));
+        $presenterStub = $this->files->get(__DIR__.'/../Stubs/Presenter.stub');
         $presenterStub = str_replace('{{Model}}', $model, $presenterStub);
         $this->files->put(app_path('Presenters/' . $model . 'Presenter.php'), $presenterStub);
 
-        $transformerStub = $this->files->get(app_path('Stubs/Transformer.stub'));
+        $transformerStub = $this->files->get(__DIR__.'/../Stubs/Transformer.stub');
         $transformerStub = str_replace('{{Model}}', $model, $transformerStub);
         $this->files->put(app_path('Transformers/' . $model . 'Transformer.php'), $transformerStub);
     }
