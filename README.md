@@ -19,12 +19,16 @@ Since this is a private package like the tenant-package, it must be pulled in by
 
 ```
 "repositories": [
-        {
-            "type": "vcs",
-            "url": "../repository-package.git"
-        }
-    ],
+    {
+        "type": "vcs",
+        "url": "https://rohan0793@bitbucket.org/archiveonline/repository-package.git"
+    }
+],
 ```
+
+Note: Don't forget to change the username in that URL.
+
+And run `composer update`.
 
 Add the service provider in the `app.php` file in the provider's array:
 
