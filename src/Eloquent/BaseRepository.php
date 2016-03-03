@@ -60,7 +60,7 @@ abstract class BaseRepository implements Repository, Criteria
 
     public function update(array $data, $id, $attribute="id") {
         $this->authorize('update', $this->model->find($id));
-        $this->model->where($attribute, '=', $id)->update($data);
+        $this->model->find($id)->update($data);
         return $this->model->find($id);
     }
 
