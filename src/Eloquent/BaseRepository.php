@@ -18,8 +18,8 @@ abstract class BaseRepository implements Repository, Criteria
     protected $skipCriteria;
     protected $fieldSearchable;
 
-    public function __construct(Collection $collection) {
-        $this->criteria = $collection;
+    public function __construct() {
+        $this->criteria = new Collection;
         $this->makeModel();
         $this->boot();
     }
