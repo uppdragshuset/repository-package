@@ -18,6 +18,20 @@ abstract class BaseRepository implements Repository, Criteria
     protected $skipCriteria;
     protected $fieldSearchable;
 
+    protected $policy  = [
+        'all' => 'index',
+        'lists' => 'index',
+        'paginate' => 'index',
+        'create' => 'store',
+        'update' => 'update',
+        'delete' => 'destroy',
+        'find' => 'index',
+        'findBy' => 'index',
+        'findAllBy' => 'index',
+        'findWhere' => 'index',
+        'with' => 'index',
+    ];
+
     public function __construct() {
         $this->criteria = new Collection;
         $this->makeModel();
@@ -27,7 +41,7 @@ abstract class BaseRepository implements Repository, Criteria
     public function all($columns = array('*')) {
         $this->applyCriteria();
         if(!$this->model instanceof \Illuminate\Database\Eloquent\Builder){
-            $this->authorize('index', $this->model);
+            $this->authorize($this->policy['all'], $this->model);
             $results = $this->model->all($columns);
         }
         else{
@@ -37,7 +51,7 @@ abstract class BaseRepository implements Repository, Criteria
     }
 
     public function lists($value, $key = null) {
-        $this->authorize('index', $this->model);
+        $this->authorize($this->policy['lists'], $this->model);
         $lists = $this->model->lists($value, $key);
         if(is_array($lists)) {
             return $lists;
@@ -48,31 +62,31 @@ abstract class BaseRepository implements Repository, Criteria
     public function paginate($perPage = 10, $columns = array('*')) {
         $this->applyCriteria();
         if(!$this->model instanceof \Illuminate\Database\Eloquent\Builder){
-            $this->authorize('index', $this->model);
+            $this->authorize($this->policy['paginate'], $this->model);
         }
         return $this->model->paginate($perPage, $columns);
     }
 
     public function create(array $data) {
-        $this->authorize('store', $this->model);
+        $this->authorize($this->policy['create'], $this->model);
         return $this->model->create($data);
     }
 
     public function update(array $data, $id, $attribute="id") {
-        $this->authorize('update', $this->model->find($id));
+        $this->authorize($this->policy['update'], $this->model->find($id));
         $this->model->find($id)->update($data);
         return $this->model->find($id);
     }
 
     public function delete($id) {
-        $this->authorize('destroy', $this->find($id));
+        $this->authorize($this->policy['delete'], $this->find($id));
         return $this->model->destroy($id);
     }
 
     public function find($id, $columns = array('*')) {
         $this->applyCriteria();
         if(!$this->model instanceof \Illuminate\Database\Eloquent\Builder){
-            $this->authorize('index', $this->model);
+            $this->authorize($this->policy['find'], $this->model);
         }
         return $this->model->find($id, $columns);
     }
@@ -80,7 +94,7 @@ abstract class BaseRepository implements Repository, Criteria
     public function findBy($attribute, $value, $columns = array('*')) {
         $this->applyCriteria();
         if(!$this->model instanceof \Illuminate\Database\Eloquent\Builder){
-            $this->authorize('index', $this->model);
+            $this->authorize($this->policy['findBy'], $this->model);
         }
         return $this->model->where($attribute, '=', $value)->first($columns);
     }
@@ -88,7 +102,7 @@ abstract class BaseRepository implements Repository, Criteria
     public function findAllBy($attribute, $value, $columns = array('*')) {
         $this->applyCriteria();
         if(!$this->model instanceof \Illuminate\Database\Eloquent\Builder){
-            $this->authorize('index', $this->model);
+            $this->authorize($this->policy['findAllBy'], $this->model);
         }
         return $this->model->where($attribute, '=', $value)->get($columns);
     }
@@ -97,7 +111,7 @@ abstract class BaseRepository implements Repository, Criteria
     {
         $this->applyCriteria();
         if(!$this->model instanceof \Illuminate\Database\Eloquent\Builder){
-            $this->authorize('index', $this->model);
+            $this->authorize($this->policy['findWhere'], $this->model);
         }
         $model = $this->model;
         foreach ($where as $field => $value) {
@@ -129,7 +143,7 @@ abstract class BaseRepository implements Repository, Criteria
     public function with($relations)
     {
         if(!$this->model instanceof \Illuminate\Database\Eloquent\Builder){
-            $this->authorize('index', $this->model);
+            $this->authorize($this->policy['with'], $this->model);
         }
         $this->model = $this->model->with($relations);
         return $this;
@@ -182,5 +196,10 @@ abstract class BaseRepository implements Repository, Criteria
     public function getFieldsSearchable()
     {
         return $this->fieldSearchable;
+    }
+
+    public function overridePolicies(Array $array)
+    {
+        return $this->policy = array_merge($this->policy, $array);
     }
 }
