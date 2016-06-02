@@ -97,6 +97,16 @@ class RequestCriteria extends BaseCriteria
             $model = $model->with($with);
         }
 
+        if($fields = $repository->getFieldsSearchable()){
+
+            foreach($fields as $field) {
+                if(!$this->request->get($field)) {
+                    continue;
+                }
+                $model = $model->where($field, $this->request->get($field));
+            }
+        }
+
         return $model;
     }
 

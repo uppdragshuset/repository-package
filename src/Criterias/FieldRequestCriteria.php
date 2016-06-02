@@ -34,7 +34,7 @@ class FieldRequestCriteria extends BaseCriteria
             if(!$this->request->get($field)) {
                 continue;
             }
-            $model = $model->where($field,"=",$this->request->get($field));
+            $model = $model->where($field, $this->request->get($field));
         }
 
         return $model;
