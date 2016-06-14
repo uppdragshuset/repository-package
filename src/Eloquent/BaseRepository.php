@@ -68,6 +68,12 @@ abstract class BaseRepository implements Repository, Criteria
         if(!$this->model instanceof \Illuminate\Database\Eloquent\Builder){
             $this->authorize($this->policy['paginate'], $this->model);
         }
+        if(env('GLOBAL_PAGINATION')){
+            $perPage = env('GLOBAL_PAGINATION');
+        }
+        if(request()->has('limit')){
+            $perPage = request()->get('limit');
+        }
         return $this->model->paginate($perPage, $columns);
     }
 
