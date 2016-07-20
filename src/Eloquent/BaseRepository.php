@@ -102,7 +102,7 @@ abstract class BaseRepository implements Repository, Criteria
         if(!$this->model instanceof \Illuminate\Database\Eloquent\Builder){
             $this->authorize($this->policy['find'], $this->model);
         }
-        return $this->model->find($id, $columns);
+        return $this->model->findOrFail($id, $columns);
     }
 
     public function findBy($attribute, $value, $columns = array('*'))
